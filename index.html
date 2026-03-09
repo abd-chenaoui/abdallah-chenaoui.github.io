@@ -24,7 +24,7 @@ body { background: var(--paper); color: var(--anthracite); font-family: 'Jost', 
 canvas#petals { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.3; }
 
 nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 18px 60px; display: flex; justify-content: space-between; align-items: center; background: rgba(250,248,245,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-.nav-logo { font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 3px; color: var(--sakura-mid); }
+.nav-logo { font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 3px; color: var(--sakura-mid); }
 .nav-links { display: flex; gap: 32px; list-style: none; }
 .nav-links a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.3s; }
 .nav-links a:hover { color: var(--sakura-mid); }
@@ -173,7 +173,7 @@ footer { padding: 28px 60px; border-top: 1px solid var(--border); display: flex;
       <div class="hero-tag">En recherche d'opportunité — CDI · CDD · Mission</div>
       <h1>Abdallah<br><em>Chenaoui</em></h1>
       <div class="hero-role">IT Support Engineer</div>
-      <p class="hero-sub">Expérience concrète en support L1/L2, gestion des postes de travail, SCCM/Intune et administration Active Directory. Disponible immédiatement en Île-de-France.</p>
+      <p class="hero-sub">Expérience en support N1/N2, gestion des postes de travail, SCCM/Intune et administration Active Directory. Disponible immédiatement en Île-de-France.</p>
       <div class="hero-cta">
         <a href="#projects" class="btn btn-primary">Voir mes projets</a>
         <a href="#contact" class="btn btn-outline">Me contacter</a>
@@ -184,7 +184,7 @@ footer { padding: 28px 60px; border-top: 1px solid var(--border); display: flex;
         <div class="avatar-ring"></div>
         <div class="avatar-circle">
           <div class="avatar-initials">AC</div>
-          <div class="avatar-sub">IT Support Engineer</div>
+          <div class="avatar-sub">IT Support Engineer, Développeur</div>
         </div>
       </div>
     </div>
@@ -201,7 +201,7 @@ footer { padding: 28px 60px; border-top: 1px solid var(--border); display: flex;
     <div class="about-text">
       <p>Ingénieur support IT, j'ai développé une expérience concrète en support L1/L2 au sein d'environnements professionnels exigeants. Chez <strong>Sarushop</strong>, j'ai géré l'ensemble des demandes utilisateurs, du premier contact jusqu'à la résolution technique, en passant par l'administration des postes et la gestion de la plateforme web Shopify.</p>
       <p>Mon passage chez <strong>XEFI Coignières</strong> m'a permis de structurer ma méthode de travail dans un contexte d'infogérance : qualification des incidents, coordination avec les équipes techniques et suivi rigoureux via ServiceNow, GLPI et Freshdesk.</p>
-      <p>Actuellement en <strong>BTS SIO option SLAM</strong> au CNED, je combine formation théorique et pratique terrain. Disponible immédiatement pour un CDI, CDD ou mission en Île-de-France.</p>
+      <p>Disponible immédiatement pour un CDI, CDD ou mission en Île-de-France.</p>
     </div>
     <div class="about-values">
       <div class="value-item">
@@ -293,7 +293,7 @@ triés = sorted(incidents, key=lambda x: x["priorité"])
 for i in triés:
     print(f"[P{i['priorité']}] {i['titre']}")</div>
       <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">Tri</span><span class="project-tag">ITSM</span></div>
-      <div class="project-skill">Démontre : logique de priorisation, traitement de données, applicable en environnement support</div>
+      <div class="project-skill">Démontre ma logique de priorisation, traitement de données, applicable en environnement support</div>
     </div>
 
     <div class="project-card">
@@ -314,7 +314,7 @@ print("Résumé hebdomadaire :")
 for s, n in statuts.items():
     print(f"  {s}: {n} ticket(s)")</div>
       <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">CSV</span><span class="project-tag">Automatisation</span></div>
-      <div class="project-skill">Démontre : automatisation de tâches répétitives, traitement de fichiers, gain de productivité</div>
+      <div class="project-skill">Démontre l'automatisation de tâches répétitives, traitement de fichiers, gain de productivité</div>
     </div>
 
     <div class="project-card">
@@ -333,7 +333,7 @@ inactifs = [p["nom"] for p in parc
             if not p["actif"]]
 print(f"À vérifier : {inactifs}")</div>
       <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">Parc IT</span><span class="project-tag">Filtrage</span></div>
-      <div class="project-skill">Démontre : gestion d'assets IT, logique de filtrage, applicable à tout inventaire de parc</div>
+      <div class="project-skill">Démontre la gestion d'assets IT, logique de filtrage, applicable à tout inventaire de parc</div>
     </div>
 
     <div class="project-card">
@@ -342,7 +342,7 @@ print(f"À vérifier : {inactifs}")</div>
       <div class="project-label">Problème</div>
       <p class="project-desc">Absence de vision claire des interactions entre les applications d'un SI universitaire. Besoin de modéliser les couches et d'identifier les zones de risques.</p>
       <div class="project-tags"><span class="project-tag">Modélisation SI</span><span class="project-tag">Architecture</span><span class="project-tag">Analyse</span></div>
-      <div class="project-skill">Démontre : vision systémique, rigueur d'analyse, capacité à structurer un SI complexe</div>
+      <div class="project-skill">Démontre la vision systémique, rigueur d'analyse, capacité à structurer un SI complexe</div>
     </div>
 
   </div>
