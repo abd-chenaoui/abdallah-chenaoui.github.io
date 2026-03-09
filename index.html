@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Informatique & Systèmes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sakura: #f2c4ce;
+  --sakura-light: #fdf0f3;
+  --sakura-mid: #e8a0b0;
+  --paper: #faf8f5;
+  --anthracite: #2a2a2a;
+  --gray: #6b6b6b;
+  --gray-light: #e8e4e0;
+  --white: #ffffff;
+  --border: rgba(242,196,206,0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--anthracite);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* PETAL CANVAS */
+canvas#petals {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; width: 100%;
+  z-index: 100;
+  padding: 24px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250,248,245,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--sakura-mid);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--sakura-mid); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 60px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.hero-tag {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--sakura-mid);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.1s ease forwards;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(42px, 5.5vw, 72px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--anthracite);
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s ease forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--sakura-mid);
+}
+
+.hero-sub {
+  margin-top: 28px;
+  font-size: 15px;
+  color: var(--gray);
+  line-height: 1.8;
+  max-width: 440px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s ease forwards;
+}
+
+.hero-cta {
+  margin-top: 48px;
+  display: flex;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s ease forwards;
+}
+
+.btn {
+  padding: 13px 32px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: var(--sakura-mid);
+  color: white;
+}
+.btn-primary:hover { background: #d4889a; transform: translateY(-2px); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--anthracite);
+  border: 1px solid var(--gray-light);
+}
+.btn-outline:hover { border-color: var(--sakura-mid); color: var(--sakura-mid); }
+
+/* AVATAR SIDE */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s ease forwards;
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 320px;
+  height: 320px;
+}
+
+.avatar-ring {
+  position: absolute;
+  inset: -16px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  animation: rotate 20s linear infinite;
+}
+
+.avatar-ring::before {
+  content: '桜';
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  color: var(--sakura-mid);
+}
+
+.avatar-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--sakura-light) 0%, #f8e8ec 100%);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.avatar-initials {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--sakura-mid);
+  letter-spacing: 4px;
+}
+
+.avatar-sub {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+/* SECTION BASE */
+.section {
+  padding: 120px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+.section-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--sakura-mid);
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 300;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ABOUT */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 15px;
+  color: var(--gray);
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.about-text p strong {
+  color: var(--anthracite);
+  font-weight: 500;
+}
+
+.about-values {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.value-item {
+  padding: 24px 28px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  position: relative;
+  transition: all 0.3s;
+}
+
+.value-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 2px; height: 0;
+  background: var(--sakura-mid);
+  transition: height 0.3s;
+}
+
+.value-item:hover::before { height: 100%; }
+.value-item:hover { transform: translateX(4px); }
+
+.value-title {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.value-desc {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* COMPETENCES */
+.skills-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.skill-cat-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--anthracite);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.skill-cat-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.skills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.skill-pill {
+  padding: 10px 22px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-size: 13px;
+  color: var(--anthracite);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.skill-pill:hover {
+  background: var(--sakura-light);
+  border-color: var(--sakura-mid);
+  color: var(--sakura-mid);
+  transform: translateY(-2px);
+}
+
+.skill-icon { font-size: 16px; }
+
+/* PROJETS */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--sakura-mid), var(--sakura-light));
+  transition: width 0.4s;
+}
+
+.project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+.project-card:hover::after { width: 100%; }
+
+.project-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--sakura-mid);
+  margin-bottom: 16px;
+}
+
+.project-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.project-problem {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--sakura-mid);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.project-desc {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.project-tag {
+  font-size: 10px;
+  padding: 3px 12px;
+  background: var(--sakura-light);
+  color: var(--sakura-mid);
+  letter-spacing: 1px;
+}
+
+.project-skill {
+  font-size: 12px;
+  color: var(--gray);
+  font-style: italic;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* SCHEMA SI */
+.schema-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 48px;
+}
+
+.schema-intro {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 48px;
+  max-width: 600px;
+}
+
+.schema-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.schema-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.schema-layer-name {
+  width: 140px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 24px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sakura-mid);
+  font-weight: 500;
+  border-right: 1px solid var(--border);
+}
+
+.schema-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 24px;
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+}
+
+.schema-row:last-child .schema-nodes { border-bottom: none; }
+
+.snode {
+  padding: 8px 16px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  color: var(--anthracite);
+  background: var(--paper);
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.snode:hover {
+  background: var(--sakura-light);
+  border-color: var(--sakura-mid);
+  color: var(--sakura-mid);
+}
+
+.snode.highlight {
+  background: var(--sakura-light);
+  border-color: var(--sakura-mid);
+  color: var(--sakura-mid);
+}
+
+/* CONTACT */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--anthracite);
+  outline: none;
+  transition: border-color 0.3s;
+  resize: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--sakura-mid);
+}
+
+.contact-info-side {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-top: 8px;
+}
+
+.contact-block {
+  padding: 28px;
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+
+.contact-block-title {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sakura-mid);
+  margin-bottom: 12px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--anthracite);
+  font-size: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s;
+}
+
+.contact-link:last-child { border-bottom: none; }
+.contact-link:hover { color: var(--sakura-mid); }
+.contact-link-icon { font-size: 18px; }
+
+/* FOOTER */
+footer {
+  padding: 40px 60px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--sakura-mid);
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 1px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 24px 60px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hero-visual { display: none; }
+  .section { padding: 80px 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  footer { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="petals"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">桜 · Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#schema">Systèmes</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Étudiant en Informatique</div>
+      <h1>Créer des systèmes<br><em>fiables</em> et<br>bien pensés.</h1>
+      <p class="hero-sub">Passionné par la compréhension et l'organisation des systèmes informatiques, j'aime résoudre des problèmes complexes avec méthode et rigueur.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+        <a href="#contact" class="btn btn-outline">Me contacter</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-circle">
+          <div class="avatar-initials">AB</div>
+          <div class="avatar-sub">Informatique & SI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section reveal" id="about">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">À propos</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Étudiant en informatique, je me suis rapidement orienté vers la <strong>compréhension globale des systèmes</strong> plutôt que vers la simple exécution technique. Ce qui m'intéresse, c'est de comprendre comment les composants d'un système s'organisent, communiquent et fonctionnent ensemble.</p>
+      <p>Mon parcours m'a amené à explorer plusieurs facettes de l'informatique : le <strong>développement</strong>, la <strong>modélisation des systèmes d'information</strong> et le <strong>support technique</strong>. Cette polyvalence me permet d'avoir une vision transversale et de m'adapter à des contextes variés.</p>
+      <p>En dehors des cours, je consacre du temps à des <strong>projets personnels</strong> qui me permettent de mettre en pratique ce que j'apprends et de développer ma capacité à résoudre des problèmes concrets.</p>
+    </div>
+    <div class="about-values">
+      <div class="value-item">
+        <div class="value-title">🔍 Logique & Analyse</div>
+        <div class="value-desc">J'aime décomposer un problème complexe en étapes claires et trouver la solution la plus cohérente et durable.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-title">⚙️ Rigueur & Méthode</div>
+        <div class="value-desc">Chaque projet mérite une approche structurée. Je documente, organise et valide avant d'agir.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-title">📐 Vision Systémique</div>
+        <div class="value-desc">Je m'intéresse à la façon dont les éléments s'interconnectent plutôt qu'à chaque composant isolément.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-title">🌱 Curiosité Continue</div>
+        <div class="value-desc">L'informatique évolue vite. Je reste attentif aux nouvelles pratiques et j'aime apprendre en permanence.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETENCES -->
+<section class="section reveal" id="skills" style="background: var(--white); max-width: 100%; padding-left: 0; padding-right: 0;">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 0 60px;">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Compétences</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-cats">
+
+      <div>
+        <div class="skill-cat-title">Développement</div>
+        <div class="skills-row">
+          <div class="skill-pill"><span class="skill-icon">🐍</span> Python</div>
+          <div class="skill-pill"><span class="skill-icon">🌐</span> HTML</div>
+          <div class="skill-pill"><span class="skill-icon">🎨</span> CSS</div>
+          <div class="skill-pill"><span class="skill-icon">📝</span> Scripts & Automatisation</div>
+          <div class="skill-pill"><span class="skill-icon">🔧</span> Débogage & Tests</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-cat-title">Systèmes d'Information</div>
+        <div class="skills-row">
+          <div class="skill-pill"><span class="skill-icon">🗺️</span> Modélisation de processus</div>
+          <div class="skill-pill"><span class="skill-icon">🏗️</span> Architecture informatique</div>
+          <div class="skill-pill"><span class="skill-icon">🔄</span> Logique des systèmes</div>
+          <div class="skill-pill"><span class="skill-icon">📊</span> Flux de données</div>
+          <div class="skill-pill"><span class="skill-icon">📋</span> Documentation technique</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-cat-title">Support & Exploitation</div>
+        <div class="skills-row">
+          <div class="skill-pill"><span class="skill-icon">🔍</span> Diagnostic de problèmes</div>
+          <div class="skill-pill"><span class="skill-icon">💻</span> Environnements informatiques</div>
+          <div class="skill-pill"><span class="skill-icon">📌</span> Résolution d'incidents</div>
+          <div class="skill-pill"><span class="skill-icon">🛠️</span> Maintenance & Suivi</div>
+          <div class="skill-pill"><span class="skill-icon">📞</span> Relation utilisateur</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJETS -->
+<section class="section reveal" id="projects">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Projets</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-num">Projet · 01</div>
+      <div class="project-title">Gestionnaire de tâches en Python</div>
+      <div class="project-problem">Problème résolu</div>
+      <p class="project-desc">Absence d'outil simple pour organiser et suivre des tâches quotidiennes avec priorités et statuts. Développement d'une application en ligne de commande permettant d'ajouter, modifier, filtrer et exporter des tâches.</p>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">JSON</span>
+        <span class="project-tag">CLI</span>
+      </div>
+      <div class="project-skill">Démontre : logique de programmation, structuration des données, autonomie</div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">Projet · 02</div>
+      <div class="project-title">Cartographie d'un SI universitaire</div>
+      <div class="project-problem">Problème résolu</div>
+      <p class="project-desc">Absence de vision claire des interactions entre les outils numériques d'une université. Modélisation complète du système d'information avec identification des flux, des applications et des zones de risques.</p>
+      <div class="project-tags">
+        <span class="project-tag">Modélisation SI</span>
+        <span class="project-tag">ArchiMate</span>
+        <span class="project-tag">Analyse</span>
+      </div>
+      <div class="project-skill">Démontre : vision systémique, rigueur d'analyse, capacité de structuration</div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">Projet · 03</div>
+      <div class="project-title">Site portfolio responsive</div>
+      <div class="project-problem">Problème résolu</div>
+      <p class="project-desc">Besoin de présenter ses compétences et projets de façon professionnelle et accessible. Conception et développement d'un portfolio complet en HTML, CSS et JavaScript, hébergé et accessible en ligne.</p>
+      <div class="project-tags">
+        <span class="project-tag">HTML</span>
+        <span class="project-tag">CSS</span>
+        <span class="project-tag">JavaScript</span>
+      </div>
+      <div class="project-skill">Démontre : sens du design, maîtrise du web, organisation du code</div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">Projet · 04</div>
+      <div class="project-title">Procédure de diagnostic réseau</div>
+      <div class="project-problem">Problème résolu</div>
+      <p class="project-desc">Manque de méthode claire pour résoudre les incidents réseau courants en environnement informatique. Rédaction d'une procédure de diagnostic structurée, étape par étape, utilisable par un technicien support.</p>
+      <div class="project-tags">
+        <span class="project-tag">Réseau</span>
+        <span class="project-tag">Support IT</span>
+        <span class="project-tag">Documentation</span>
+      </div>
+      <div class="project-skill">Démontre : méthode, clarté de communication, compréhension réseau</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SCHEMA SI -->
+<section class="section reveal" id="schema" style="background: var(--sakura-light); max-width: 100%; padding-left: 0; padding-right: 0;">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 0 60px;">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Vision des Systèmes</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="schema-wrap">
+      <p class="schema-intro">Un système d'information, c'est l'ensemble des outils, applications et flux de données qui permettent à une organisation de fonctionner. Voici comment je modélise et structure cette vision, appliquée à un contexte universitaire.</p>
+
+      <div class="schema-diagram">
+        <div class="schema-row">
+          <div class="schema-layer-name">Utilisateurs</div>
+          <div class="schema-nodes">
+            <div class="snode highlight">Étudiants</div>
+            <div class="snode highlight">Enseignants</div>
+            <div class="snode highlight">Personnels administratifs</div>
+            <div class="snode highlight">Direction</div>
+          </div>
+        </div>
+        <div class="schema-row">
+          <div class="schema-layer-name">Services métier</div>
+          <div class="schema-nodes">
+            <div class="snode">Scolarité</div>
+            <div class="snode">Ressources Humaines</div>
+            <div class="snode">Finance</div>
+            <div class="snode">Recherche</div>
+            <div class="snode">Communication</div>
+          </div>
+        </div>
+        <div class="schema-row">
+          <div class="schema-layer-name">Applications</div>
+          <div class="schema-nodes">
+            <div class="snode">Apogée (Scolarité)</div>
+            <div class="snode">Harpège (RH)</div>
+            <div class="snode">SIFAC (Finance)</div>
+            <div class="snode">Moodle (Cours)</div>
+            <div class="snode">ENT (Portail)</div>
+            <div class="snode">Messagerie</div>
+          </div>
+        </div>
+        <div class="schema-row">
+          <div class="schema-layer-name">Données</div>
+          <div class="schema-nodes">
+            <div class="snode">Référentiel étudiants</div>
+            <div class="snode">Annuaire LDAP</div>
+            <div class="snode">Base financière</div>
+            <div class="snode">Données RH</div>
+          </div>
+        </div>
+        <div class="schema-row">
+          <div class="schema-layer-name">Infrastructure</div>
+          <div class="schema-nodes">
+            <div class="snode">Serveurs</div>
+            <div class="snode">Réseau RENATER</div>
+            <div class="snode">Wi-Fi campus</div>
+            <div class="snode">Sécurité & Accès</div>
+            <div class="snode">Cloud</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section reveal" id="contact">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid">
+    <form class="contact-form" onsubmit="return false;">
+      <div class="form-group">
+        <label>Nom complet</label>
+        <input type="text" placeholder="Votre nom">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="votre@email.com">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea rows="5" placeholder="Votre message..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Envoyer</button>
+    </form>
+    <div class="contact-info-side">
+      <div class="contact-block">
+        <div class="contact-block-title">Réseaux & Profils</div>
+        <a href="#" class="contact-link">
+          <span class="contact-link-icon">🐙</span> GitHub — @votre-pseudo
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-icon">💼</span> LinkedIn — Votre Nom
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-icon">📧</span> votre@email.com
+        </a>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block-title">Disponibilité</div>
+        <p style="font-size:14px;color:var(--gray);line-height:1.7;">Disponible pour un stage, une alternance ou une opportunité junior à partir de <strong style="color:var(--anthracite);">[date]</strong>. Ouvert aux missions en Île-de-France.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">桜</div>
+  <div class="footer-copy">Portfolio — Informatique & Systèmes d'Information</div>
+</footer>
+
+<script>
+// PETAL ANIMATION
+const canvas = document.getElementById('petals');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const petals = [];
+const colors = ['#f2c4ce','#e8a0b0','#fde8ee','#f9d0da'];
+
+for (let i = 0; i < 28; i++) {
+  petals.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight - window.innerHeight,
+    size: Math.random() * 8 + 4,
+    speed: Math.random() * 0.8 + 0.3,
+    wind: Math.random() * 0.6 - 0.3,
+    rotation: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.02,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    opacity: Math.random() * 0.5 + 0.2
+  });
+}
+
+function drawPetal(p) {
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(p.rotation);
+  ctx.globalAlpha = p.opacity;
+  ctx.fillStyle = p.color;
+  ctx.beginPath();
+  ctx.ellipse(0, 0, p.size, p.size * 0.6, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  petals.forEach(p => {
+    p.y += p.speed;
+    p.x += p.wind;
+    p.rotation += p.rotSpeed;
+    if (p.y > canvas.height + 20) {
+      p.y = -20;
+      p.x = Math.random() * canvas.width;
+    }
+    drawPetal(p);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// SCROLL REVEAL
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
